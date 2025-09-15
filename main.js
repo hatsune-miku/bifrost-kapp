@@ -22,9 +22,6 @@ const proxy = createProxyMiddleware({
   target: 'https://www.kookapp.cn',
   changeOrigin: true,
   ws: true,
-  followRedirects: true,
-  cookiePathRewrite: '/',
-  logLevel: 'debug',
   //   onProxyReq: (proxyReq, req) => {
   //     proxyReq.write(req.body)
   //   },
