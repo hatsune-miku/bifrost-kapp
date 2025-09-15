@@ -22,6 +22,7 @@ const proxy = createProxyMiddleware({
   changeOrigin: true,
   ws: true,
   followRedirects: true,
+  cookieDomainRewrite: 'www.kookapp.cn',
   logLevel: 'debug',
   //   onProxyReq: (proxyReq, req) => {
   //     proxyReq.write(req.body)
