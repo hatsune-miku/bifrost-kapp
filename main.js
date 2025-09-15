@@ -17,6 +17,8 @@ const app = express()
 // })
 
 // app.use(bodyParser.raw())
+
+let myappSessionValidationCookie = null
 const proxy = createProxyMiddleware({
   target: 'https://www.kookapp.cn',
   changeOrigin: true,
@@ -24,6 +26,17 @@ const proxy = createProxyMiddleware({
   followRedirects: true,
   cookieDomainRewrite: 'www.kookapp.cn',
   logLevel: 'debug',
+  onProxyReq: (proxyReq) => {
+    if (myappSessionValidationCookie) {
+      proxyReq.setHeader('cookie', myappSessionValidationCookie)
+    }
+  },
+  onProxyRes: (proxyRes) => {
+    const proxyCookie = proxyRes.headers['set-cookie']
+    if (proxyCookie) {
+      myappSessionValidationCookie = proxyCookie
+    }
+  },
   //   onProxyReq: (proxyReq, req) => {
   //     proxyReq.write(req.body)
   //   },
