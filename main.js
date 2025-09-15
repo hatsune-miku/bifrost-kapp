@@ -4,19 +4,19 @@ const bodyParser = require('body-parser')
 
 const app = express()
 
-app.use((req, res, next) => {
-  if (req.headers['content-type']?.includes('application/json')) {
-    bodyParser.json()(req, res, next)
-  } else if (
-    req.headers['content-type']?.includes('application/x-www-form-urlencoded')
-  ) {
-    bodyParser.urlencoded({ extended: true })(req, res, next)
-  } else {
-    next()
-  }
-})
+// app.use((req, res, next) => {
+//   if (req.headers['content-type']?.includes('application/json')) {
+//     bodyParser.json()(req, res, next)
+//   } else if (
+//     req.headers['content-type']?.includes('application/x-www-form-urlencoded')
+//   ) {
+//     bodyParser.urlencoded({ extended: true })(req, res, next)
+//   } else {
+//     next()
+//   }
+// })
 
-app.use(bodyParser.raw())
+// app.use(bodyParser.raw())
 const proxy = createProxyMiddleware({
   target: 'https://www.kookapp.cn',
   changeOrigin: true,
@@ -28,13 +28,13 @@ const proxy = createProxyMiddleware({
   //   },
 })
 
-app.use('/api/v3/aaa/bbb', (req, res, next) => {
-  console.log('Intercepted /api/v3/aaa/bbb request')
-  if (req.body) {
-    req.bodyAlreadyModified = true
-  }
-  next()
-})
+// app.use('/api/v3/aaa/bbb', (req, res, next) => {
+//   console.log('Intercepted /api/v3/aaa/bbb request')
+//   if (req.body) {
+//     req.bodyAlreadyModified = true
+//   }
+//   next()
+// })
 
 app.use('/', proxy)
 
