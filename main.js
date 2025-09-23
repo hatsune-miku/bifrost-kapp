@@ -18,7 +18,6 @@ const app = express()
 
 // app.use(bodyParser.raw())
 
-console.log('xx', 'log')
 const proxy = createProxyMiddleware({
   target: 'https://www.kookapp.cn',
   logLevel: 'debug',
@@ -60,7 +59,14 @@ const proxy = createProxyMiddleware({
 //   next()
 // })
 
-app.use('/', proxy)
+app.use(
+  '/',
+  (req, res, next) => {
+    console.log('xx', 'Intercepted request', req.url)
+    next()
+  },
+  proxy
+)
 
 const PORT = 9872
 app.listen(PORT, () => {
