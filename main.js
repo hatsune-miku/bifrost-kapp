@@ -4,34 +4,31 @@ const bodyParser = require('body-parser')
 
 const app = express()
 
-// app.use((req, res, next) => {
-//   if (req.headers['content-type']?.includes('application/json')) {
-//     bodyParser.json()(req, res, next)
-//   } else if (
-//     req.headers['content-type']?.includes('application/x-www-form-urlencoded')
-//   ) {
-//     bodyParser.urlencoded({ extended: true })(req, res, next)
-//   } else {
-//     next()
-//   }
-// })
-
-// app.use(bodyParser.raw())
-
 const proxy = createProxyMiddleware({
   target: 'https://www.kookapp.cn',
   logLevel: 'debug',
   changeOrigin: true,
   ws: true,
+  cookieDomainRewrite: {
+    'www.kookapp.cn': 'localhost',
+    '.kookapp.cn': 'localhost',
+  },
+  cookiePathRewrite: {
+    '/': '/',
+  },
+  onProxyRes: (proxyRes, req, res) => {
+    // Handle set-cookie headers
+    const setCookieHeader = proxyRes.headers['set-cookie']
+    if (setCookieHeader) {
+      proxyRes.headers['set-cookie'] = setCookieHeader.map((cookie) => {
+        return cookie
+          .replace(/Domain=\.?kookapp\.cn/gi, 'Domain=localhost')
+          .replace(/Secure;?/gi, '') // Remove Secure flag for localhost
+          .replace(/SameSite=None/gi, 'SameSite=Lax') // Adjust SameSite for localhost
+      })
+    }
+  },
 })
-
-// app.use('/api/v3/aaa/bbb', (req, res, next) => {
-//   console.log('Intercepted /api/v3/aaa/bbb request')
-//   if (req.body) {
-//     req.bodyAlreadyModified = true
-//   }
-//   next()
-// })
 
 app.use(
   '/',
