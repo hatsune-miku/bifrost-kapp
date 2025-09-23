@@ -21,25 +21,65 @@ app.use(
     req.headers.host = 'www.kookapp.cn'
     req.headers.referer = 'https://www.kookapp.cn'
   },
-  (req, res, next) => {
-    const setCookie = res.headers['set-cookie']
-    if (setCookie) {
-      console.log('xx', 'Modified set-cookie', setCookie)
-      req.headers['set-cookie'] = setCookie.map((cookie) => {
-        return cookie
-          .replace(/Domain=kookapp\.cn/i, 'Domain=localhost')
-          .replace(/Secure/i, '')
-          .replace(/SameSite=None/i, 'SameSite=Lax')
-      })
-    }
-    next()
-  },
+  modifySetCookieMiddleware({
+    transform: (cookie) => {
+      // Custom transformation logic
+      console.log('xx', 'Transforming cookie', cookie)
+      return cookie
+        .replace(/Domain=kookapp\.cn/i, 'Domain=localhost')
+        .replace(/Secure/i, '')
+        .replace(/SameSite=None/i, 'SameSite=Lax')
+    },
+  }),
   proxy
 )
-
-app.use(bodyParser.json())
 
 const PORT = 9872
 app.listen(PORT, () => {
   console.log(`Server A (9872) running on port ${PORT}`)
 })
+
+function modifySetCookieMiddleware(options = {}) {
+  return function (req, res, next) {
+    const originalSetHeader = res.setHeader
+
+    // Override setHeader to intercept Set-Cookie headers
+    res.setHeader = function (name, value) {
+      if (name.toLowerCase() === 'set-cookie') {
+        let cookies = Array.isArray(value) ? value : [value]
+
+        // Modify cookies as needed
+        cookies = cookies.map((cookie) => {
+          // Example modifications:
+          // 1. Add Secure flag if not present
+          if (!cookie.includes('Secure') && options.forceSecure) {
+            cookie += '; Secure'
+          }
+
+          // 2. Add SameSite attribute if not present
+          if (!cookie.includes('SameSite') && options.sameSite) {
+            cookie += `; SameSite=${options.sameSite}`
+          }
+
+          // 3. Add domain if specified
+          if (options.domain && !cookie.includes('Domain=')) {
+            cookie += `; Domain=${options.domain}`
+          }
+
+          // 4. Modify specific cookie values
+          if (options.transform) {
+            cookie = options.transform(cookie)
+          }
+
+          return cookie
+        })
+
+        return originalSetHeader.call(this, name, cookies)
+      }
+
+      return originalSetHeader.apply(this, arguments)
+    }
+
+    next()
+  }
+}
