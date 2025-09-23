@@ -63,6 +63,7 @@ app.use(
   '/',
   (req, res, next) => {
     console.log('xx', 'Intercepted request', req.url)
+    req.url = req.url.replace('/kookapp', '')
     next()
   },
   proxy
