@@ -19,6 +19,7 @@ const proxy = createProxyMiddleware({
   onProxyRes: (proxyRes, req, res) => {
     // Handle set-cookie headers
     const setCookieHeader = proxyRes.headers['set-cookie']
+    process.exit(0)
     if (setCookieHeader) {
       proxyRes.headers['set-cookie'] = setCookieHeader.map((cookie) => {
         return cookie
