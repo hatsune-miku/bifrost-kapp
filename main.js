@@ -4,42 +4,13 @@ const bodyParser = require('body-parser')
 
 const app = express()
 
-// Test route to verify server is working
-app.get('/test', (req, res) => {
-  res.json({ message: 'Server is working', timestamp: new Date().toISOString() })
-})
-
 const proxy = createProxyMiddleware({
   target: 'https://www.kookapp.cn',
   logLevel: 'debug',
   changeOrigin: true,
   ws: true,
-  cookieDomainRewrite: {
-    'www.kookapp.cn': 'localhost',
-    '.kookapp.cn': 'localhost',
-  },
-  cookiePathRewrite: {
-    '/': '/',
-  },
-  onProxyReq: (proxyReq, req, res) => {
-    console.log('🚀 Proxy request:', req.method, req.url, '-> Target:', proxyReq.path)
-  },
-  onProxyRes: (proxyRes, req, res) => {
-    console.log('✅ Proxy response:', proxyRes.statusCode, req.url)
-    const setCookieHeader = proxyRes.headers['set-cookie']
-    if (setCookieHeader) {
-      console.log('🍪 Original cookies:', setCookieHeader)
-      proxyRes.headers['set-cookie'] = setCookieHeader.map((cookie) => {
-        return cookie
-          .replace(/Domain=\.?kookapp\.cn/gi, 'Domain=localhost')
-          .replace(/Secure;?/gi, '') // Remove Secure flag for localhost
-          .replace(/SameSite=None/gi, 'SameSite=Lax') // Adjust SameSite for localhost
-      })
-      console.log('🍪 Modified cookies:', proxyRes.headers['set-cookie'])
-    }
-  },
-  onError: (err, req, res) => {
-    console.error('❌ Proxy error:', err.message)
+  onProxyReq: (proxyReq, req) => {
+    console.log('xx', 'Proxy request', req.body)
   },
 })
 
@@ -47,17 +18,15 @@ app.use(
   '/',
   (req, res, next) => {
     console.log('xx', 'Intercepted request', req.url)
-    console.log('Headers before:', req.headers.host)
     req.url = req.url.replace('/kookapp', '')
     req.headers.host = 'www.kookapp.cn'
     req.headers.referer = 'https://www.kookapp.cn'
-    console.log('Modified URL:', req.url)
-    console.log('Modified host:', req.headers.host)
-    console.log('About to call next()...')
     next()
   },
   proxy
 )
+
+app.use(bodyParser.json())
 
 const PORT = 9872
 app.listen(PORT, () => {
