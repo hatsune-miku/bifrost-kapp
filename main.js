@@ -27,7 +27,7 @@ app.use(
       // Custom transformation logic
       console.log('xx', 'Transforming cookie', cookie)
       return cookie
-        .replace(/Domain=kookapp\.cn/i, 'Domain=localhost')
+        .replace(/Domain=kookapp\.cn/i, 'Domain=bifrost-api.vanillacake.cn')
         .replace(/Secure/i, '')
         .replace(/SameSite=None/i, 'SameSite=Lax')
     },
