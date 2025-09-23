@@ -18,6 +18,7 @@ const app = express()
 
 // app.use(bodyParser.raw())
 
+console.log('xx', 'log')
 const proxy = createProxyMiddleware({
   target: 'https://www.kookapp.cn',
   logLevel: 'debug',
