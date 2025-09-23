@@ -4,6 +4,11 @@ const bodyParser = require('body-parser')
 
 const app = express()
 
+// Test route to verify server is working
+app.get('/test', (req, res) => {
+  res.json({ message: 'Server is working', timestamp: new Date().toISOString() })
+})
+
 const proxy = createProxyMiddleware({
   target: 'https://www.kookapp.cn',
   logLevel: 'debug',
@@ -42,9 +47,13 @@ app.use(
   '/',
   (req, res, next) => {
     console.log('xx', 'Intercepted request', req.url)
+    console.log('Headers before:', req.headers.host)
     req.url = req.url.replace('/kookapp', '')
     req.headers.host = 'www.kookapp.cn'
     req.headers.referer = 'https://www.kookapp.cn'
+    console.log('Modified URL:', req.url)
+    console.log('Modified host:', req.headers.host)
+    console.log('About to call next()...')
     next()
   },
   proxy
