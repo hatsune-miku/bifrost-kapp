@@ -21,35 +21,8 @@ const app = express()
 const proxy = createProxyMiddleware({
   target: 'https://www.kookapp.cn',
   logLevel: 'debug',
-  logProvider(provider) {
-    return console
-  },
   changeOrigin: true,
   ws: true,
-  headers: {
-    Referer: 'https://www.kookapp.cn',
-    Host: 'www.kookapp.cn',
-  },
-  onProxyReq: (proxyReq, req) => {
-    console.log('xx', 'Changing Referer from', proxyReq.getHeader('Referer'), 'to', 'https://www.kookapp.cn')
-    proxyReq.setHeader('Referer', 'https://www.kookapp.cn')
-  },
-  onProxyRes: (proxyRes, req, res) => {
-    console.log('xx', 'Changing Referer from', proxyRes.getHeader('Referer'), 'to', 'https://www.kookapp.cn')
-    proxyRes.setHeader('Referer', 'https://www.kookapp.cn')
-  },
-  onOpen: (proxySocket) => {
-    console.log('xx', 'Proxy socket opened')
-  },
-  onClose: (res, socket, head) => {
-    console.log('xx', 'Proxy socket closed')
-  },
-  onError: (err, req, res) => {
-    console.log('xx', 'Proxy error', err)
-  },
-  onProxyReqWs: (proxyReq, req, socket, options, head) => {
-    console.log('xx', 'Proxy socket opened')
-  },
 })
 
 // app.use('/api/v3/aaa/bbb', (req, res, next) => {
@@ -65,15 +38,11 @@ app.use(
   (req, res, next) => {
     console.log('xx', 'Intercepted request', req.url)
     req.url = req.url.replace('/kookapp', '')
+    req.headers.host = 'www.kookapp.cn'
+    req.headers.referer = 'https://www.kookapp.cn'
     next()
   },
-  proxy,
-  (req, res, next) => {
-    console.log('xx', 'Actual request headers', {
-      headers: req.headers,
-    })
-    next()
-  }
+  proxy
 )
 
 const PORT = 9872
