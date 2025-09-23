@@ -20,6 +20,7 @@ app.use(
     req.url = req.url.replace('/kookapp', '')
     req.headers.host = 'www.kookapp.cn'
     req.headers.referer = 'https://www.kookapp.cn'
+    next()
   },
   modifySetCookieMiddleware({
     transform: (cookie) => {
