@@ -67,7 +67,13 @@ app.use(
     req.url = req.url.replace('/kookapp', '')
     next()
   },
-  proxy
+  proxy,
+  (req, res, next) => {
+    console.log('xx', 'Actual request headers', {
+      headers: req.headers,
+    })
+    next()
+  }
 )
 
 const PORT = 9872
