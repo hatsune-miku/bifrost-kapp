@@ -20,6 +20,16 @@ app.use(
     req.url = req.url.replace('/kookapp', '')
     req.headers.host = 'www.kookapp.cn'
     req.headers.referer = 'https://www.kookapp.cn'
+
+    const setCookie = req.headers['set-cookie']
+    if (setCookie) {
+      req.headers['set-cookie'] = setCookie.map((cookie) => {
+        return cookie
+          .replace('Domain=kookapp.cn', 'Domain=localhost')
+          .replace('Secure', '')
+          .replace('SameSite=None', 'SameSite=Lax')
+      })
+    }
     next()
   },
   proxy
