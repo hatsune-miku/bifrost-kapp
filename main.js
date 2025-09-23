@@ -33,6 +33,18 @@ const proxy = createProxyMiddleware({
     console.log('xx', 'Changing Referer from', proxyRes.getHeader('Referer'), 'to', 'https://www.kookapp.cn')
     proxyRes.setHeader('Referer', 'https://www.kookapp.cn')
   },
+  onOpen: (proxySocket) => {
+    console.log('xx', 'Proxy socket opened')
+  },
+  onClose: (res, socket, head) => {
+    console.log('xx', 'Proxy socket closed')
+  },
+  onError: (err, req, res) => {
+    console.log('xx', 'Proxy error', err)
+  },
+  onProxyReqWs: (proxyReq, req, socket, options, head) => {
+    console.log('xx', 'Proxy socket opened')
+  },
 })
 
 // app.use('/api/v3/aaa/bbb', (req, res, next) => {
