@@ -16,18 +16,25 @@ const proxy = createProxyMiddleware({
   cookiePathRewrite: {
     '/': '/',
   },
+  onProxyReq: (proxyReq, req, res) => {
+    console.log('🚀 Proxy request:', req.method, req.url, '-> Target:', proxyReq.path)
+  },
   onProxyRes: (proxyRes, req, res) => {
-    // Handle set-cookie headers
+    console.log('✅ Proxy response:', proxyRes.statusCode, req.url)
     const setCookieHeader = proxyRes.headers['set-cookie']
-    process.exit(0)
     if (setCookieHeader) {
+      console.log('🍪 Original cookies:', setCookieHeader)
       proxyRes.headers['set-cookie'] = setCookieHeader.map((cookie) => {
         return cookie
           .replace(/Domain=\.?kookapp\.cn/gi, 'Domain=localhost')
           .replace(/Secure;?/gi, '') // Remove Secure flag for localhost
           .replace(/SameSite=None/gi, 'SameSite=Lax') // Adjust SameSite for localhost
       })
+      console.log('🍪 Modified cookies:', proxyRes.headers['set-cookie'])
     }
+  },
+  onError: (err, req, res) => {
+    console.error('❌ Proxy error:', err.message)
   },
 })
 
