@@ -20,6 +20,10 @@ const app = express()
 
 const proxy = createProxyMiddleware({
   target: 'https://www.kookapp.cn',
+  logLevel: 'debug',
+  logProvider(provider) {
+    return console
+  },
   changeOrigin: true,
   ws: true,
   headers: {
