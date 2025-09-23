@@ -23,6 +23,7 @@ app.use(
 
     const setCookie = req.headers['set-cookie']
     if (setCookie) {
+      console.log('xx', 'Modified set-cookie', setCookie)
       req.headers['set-cookie'] = setCookie.map((cookie) => {
         return cookie
           .replace(/Domain=kookapp\.cn/i, 'Domain=localhost')
