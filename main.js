@@ -8,7 +8,6 @@ const proxy = createProxyMiddleware({
   target: 'https://www.kookapp.cn',
   logLevel: 'debug',
   changeOrigin: true,
-  ws: true,
   onProxyReq: (proxyReq, req) => {
     console.log('xx', 'Proxy request', req.body)
   },
