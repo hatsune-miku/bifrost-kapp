@@ -25,7 +25,7 @@ app.use(
     if (setCookie) {
       req.headers['set-cookie'] = setCookie.map((cookie) => {
         return cookie
-          .replace(/Domain=kookapp.cn/i, 'Domain=localhost')
+          .replace(/Domain=kookapp\.cn/i, 'Domain=localhost')
           .replace(/Secure/i, '')
           .replace(/SameSite=None/i, 'SameSite=Lax')
       })
