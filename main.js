@@ -22,7 +22,11 @@ const proxy = createProxyMiddleware({
   target: 'https://www.kookapp.cn',
   changeOrigin: true,
   ws: true,
+  headers: {
+    Referer: 'https://www.kookapp.cn',
+  },
   onProxyReq: (proxyReq, req) => {
+    console.log('xx', 'Changing Referer from', proxyReq.getHeader('Referer'), 'to', 'https://www.kookapp.cn')
     proxyReq.setHeader('Referer', 'https://www.kookapp.cn')
   },
 })
