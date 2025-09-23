@@ -22,9 +22,9 @@ const proxy = createProxyMiddleware({
   target: 'https://www.kookapp.cn',
   changeOrigin: true,
   ws: true,
-  //   onProxyReq: (proxyReq, req) => {
-  //     proxyReq.write(req.body)
-  //   },
+  onProxyReq: (proxyReq, req) => {
+    proxyReq.setHeader('Referer', 'https://www.kookapp.cn')
+  },
 })
 
 // app.use('/api/v3/aaa/bbb', (req, res, next) => {
