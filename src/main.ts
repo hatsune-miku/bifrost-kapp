@@ -29,31 +29,29 @@ const proxy = createProxyMiddleware({
 const staticProxy = createProxyMiddleware({
   target: 'https://static.kookapp.cn',
   changeOrigin: true,
-  pathRewrite: {
-    // '^/static': 'static.kookapp.cn/',
-  },
   on: {
     proxyReq: (proxyReq, req, res) => {
-      req.headers['authority'] = 'static.kookapp.cn'
-      req.headers['host'] = 'www.kookapp.cn'
-      req.headers['referer'] = 'https://www.kookapp.cn'
-      req.headers['sec-ch-ua'] = '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"'
-      req.headers['sec-ch-ua-mobile'] = '?0'
-      req.headers['sec-ch-ua-platform'] = '"Windows"'
-      req.headers['user-agent'] =
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36'
-      req.headers['accept'] = '*/*'
-      req.headers['accept-encoding'] = 'gzip, deflate, br, zstd'
-      req.headers['accept-language'] = 'en-GB,en-US;q=0.9,en;q=0.8,zh-CN;q=0.7,zh;q=0.6'
-      req.headers['cache-control'] = 'no-cache'
-      req.headers['pragma'] = 'no-cache'
-      req.headers['priority'] = 'u=2'
-      req.headers['sec-fetch-dest'] = 'script'
-      req.headers['sec-fetch-mode'] = 'no-cors'
-      req.headers['sec-fetch-site'] = 'same-site'
+      // req.headers['authority'] = 'static.kookapp.cn'
+      // req.headers['host'] = 'www.kookapp.cn'
+      // req.headers['referer'] = 'https://www.kookapp.cn'
+      // req.headers['sec-ch-ua'] = '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"'
+      // req.headers['sec-ch-ua-mobile'] = '?0'
+      // req.headers['sec-ch-ua-platform'] = '"Windows"'
+      // req.headers['user-agent'] =
+      //   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36'
+      // req.headers['accept'] = '*/*'
+      // req.headers['accept-encoding'] = 'gzip, deflate, br, zstd'
+      // req.headers['accept-language'] = 'en-GB,en-US;q=0.9,en;q=0.8,zh-CN;q=0.7,zh;q=0.6'
+      // req.headers['cache-control'] = 'no-cache'
+      // req.headers['pragma'] = 'no-cache'
+      // req.headers['priority'] = 'u=2'
+      // req.headers['sec-fetch-dest'] = 'script'
+      // req.headers['sec-fetch-mode'] = 'no-cors'
+      // req.headers['sec-fetch-site'] = 'same-site'
+      console.log('xx', 'e', req.headers)
     },
     proxyRes: (proxyRes, req, res) => {
-      console.log('xx', 'proxyRes', proxyRes.statusCode, proxyRes.headers)
+      // console.log('xx', 'proxyRes', proxyRes.statusCode, proxyRes.headers)
     },
   },
 })
