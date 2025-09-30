@@ -34,6 +34,8 @@ const staticProxy = createProxyMiddleware({
   },
   on: {
     proxyReq: (proxyReq, req, res) => {
+      req.headers['authority'] = 'static.kookapp.cn'
+      req.headers['host'] = 'www.kookapp.cn'
       req.headers['referer'] = 'https://www.kookapp.cn'
       req.headers['sec-ch-ua'] = '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"'
       req.headers['sec-ch-ua-mobile'] = '?0'
@@ -44,8 +46,6 @@ const staticProxy = createProxyMiddleware({
       req.headers['accept-encoding'] = 'gzip, deflate, br, zstd'
       req.headers['accept-language'] = 'en-GB,en-US;q=0.9,en;q=0.8,zh-CN;q=0.7,zh;q=0.6'
       req.headers['cache-control'] = 'no-cache'
-      req.headers['cookie'] =
-        'auth=d4fbe16caa9e31a1b40d1e8fb5b9b34cc695aa6eb62a2bc62f4bd002e3ac793a16147124-1759053408; Hm_lvt_ad9a793420ed959cf56a032b6eb75140=1759040807,1759059489; HMACCOUNT=F8E20542DA2F1D4C; Hm_lpvt_ad9a793420ed959cf56a032b6eb75140=1759231691'
       req.headers['pragma'] = 'no-cache'
       req.headers['priority'] = 'u=2'
       req.headers['sec-fetch-dest'] = 'script'
@@ -53,7 +53,7 @@ const staticProxy = createProxyMiddleware({
       req.headers['sec-fetch-site'] = 'same-site'
     },
     proxyRes: (proxyRes, req, res) => {
-      console.log('xx', 'proxyRes', req.headers)
+      console.log('xx', 'proxyRes', req.headers, req)
     },
   },
 })
