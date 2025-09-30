@@ -34,7 +34,8 @@ const staticProxy = createProxyMiddleware({
   },
   on: {
     proxyReq: (proxyReq, req, res) => {
-      console.log('xx', 'proxyReq', req.url)
+      req.headers['host'] = 'static.kookapp.cn'
+      req.headers['referer'] = 'https://www.kookapp.cn'
     },
   },
 })
