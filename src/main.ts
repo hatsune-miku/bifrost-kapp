@@ -33,6 +33,11 @@ const staticProxy = createProxyMiddleware({
   pathRewrite: {
     '^/static': '',
   },
+  on: {
+    proxyReq: (proxyReq, req, res) => {
+      console.log('xx', 'proxyReq', req.url)
+    },
+  },
 })
 
 app.use('/mis', (req, res) => {
