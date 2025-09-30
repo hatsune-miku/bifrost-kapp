@@ -1,12 +1,18 @@
 import dotenv from 'dotenv'
 import express from 'express'
-import { createProxyMiddleware } from 'http-proxy-middleware'
+import { createProxyMiddleware, responseInterceptor } from 'http-proxy-middleware'
 
+import { configureInterceptor } from './interceptor'
+import { ResponseInterceptor } from './utils/interceptor'
 import { modifySetCookieMiddleware } from './utils/set-cookie-middleware'
 
 dotenv.config()
 
 const app = express()
+
+const interceptor = new ResponseInterceptor()
+
+configureInterceptor(interceptor)
 
 // eslint-disable-next-line no-undef
 const domain = process.env.DOMAIN
@@ -14,13 +20,9 @@ const domain = process.env.DOMAIN
 const proxy = createProxyMiddleware({
   target: 'https://www.kookapp.cn',
   changeOrigin: true,
+  selfHandleResponse: true,
   on: {
-    proxyReq: (proxyReq, req) => {
-      console.log('xx', 'Proxy request', req.url)
-    },
-    proxyRes: (proxyRes, req, res) => {
-      console.log('xx', 'Proxy response', proxyRes.headers)
-    },
+    proxyRes: responseInterceptor(interceptor.intercept.bind(interceptor)),
   },
 })
 
@@ -38,8 +40,6 @@ app.use(
   },
   modifySetCookieMiddleware({
     transform: (cookie) => {
-      // Custom transformation logic
-      console.log('xx', 'Transforming cookie', cookie)
       return cookie.replace(/Domain=kookapp\.cn/i, `Domain=${domain}`)
     },
   }),

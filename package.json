@@ -4,9 +4,9 @@
   "main": "src/main.ts",
   "license": "MIT",
   "scripts": {
-    "start": "rimraf dist && tsc && node dist/src/main.js",
+    "start": "yarn clean && yarn build && node dist/src/main.js",
     "clean": "rimraf dist",
-    "build": "tsc"
+    "build": "tsc && tsc-alias"
   },
   "dependencies": {
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
@@ -15,6 +15,7 @@
     "http-proxy-middleware": "^3.0.5",
     "prettier": "^3.6.2",
     "rimraf": "^6.0.1",
+    "tsc-alias": "^1.8.16",
     "typescript": "^5.9.2"
   }
 }

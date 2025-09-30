@@ -1,8 +1,10 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import tseslint from 'typescript-eslint'
 import pluginReact from 'eslint-plugin-react'
 import { defineConfig } from 'eslint/config'
+import globals from 'globals'
+import tseslint from 'typescript-eslint'
+import * as parser from 'typescript-eslint/parser'
+
+import js from '@eslint/js'
 
 /**
  * 同时对 js 和 ts 生效的配置
@@ -77,6 +79,11 @@ export default defineConfig([
     rules: {
       ...commonRules,
       ...jsRules,
+    },
+  },
+  {
+    parserOptions: {
+      programs: [parser.createProgram('tsconfig.json')],
     },
   },
 ])
