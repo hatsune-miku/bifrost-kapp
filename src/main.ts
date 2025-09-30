@@ -32,6 +32,7 @@ const staticProxy = createProxyMiddleware({
   on: {
     proxyReq: (proxyReq, req, res) => {
       proxyReq.setHeaders({
+        // @ts-ignore
         host: 'localhost:9872',
         connection: 'close',
         pragma: 'no-cache',
