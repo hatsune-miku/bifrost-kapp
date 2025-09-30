@@ -29,7 +29,6 @@ const proxy = createProxyMiddleware({
 const staticProxy = createProxyMiddleware({
   target: 'https://static.kookapp.cn',
   changeOrigin: true,
-  selfHandleResponse: true,
   pathRewrite: {
     '^/static': 'static.kookapp.cn/',
   },
