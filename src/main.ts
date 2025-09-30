@@ -93,6 +93,7 @@ app.use('/mis', (req, res) => {
 })
 
 app.use('/static', staticProxy)
+app.use('/assets', assetsProxy)
 
 app.use(
   '/',
