@@ -31,8 +31,8 @@ const staticProxy = createProxyMiddleware({
   changeOrigin: true,
   on: {
     proxyReq: (proxyReq, req, res) => {
-      proxyReq.setHeaders({
-        // @ts-ignore
+      const headers = new Map()
+      const obj = {
         host: 'localhost:9872',
         connection: 'close',
         pragma: 'no-cache',
@@ -51,7 +51,11 @@ const staticProxy = createProxyMiddleware({
         'sec-fetch-dest': 'document',
         'accept-encoding': 'gzip, deflate, br, zstd',
         'accept-language': 'en-GB,en-US;q=0.9,en;q=0.8,zh-CN;q=0.7,zh;q=0.6',
+      }
+      Object.entries(obj).forEach(([key, value]) => {
+        headers.set(key, value)
       })
+      proxyReq.setHeaders(headers)
       // req.headers['authority'] = 'static.kookapp.cn'
       // req.headers['host'] = 'www.kookapp.cn'
       // req.headers['referer'] = 'https://www.kookapp.cn'
