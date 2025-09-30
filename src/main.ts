@@ -33,9 +33,6 @@ const staticProxy = createProxyMiddleware({
     proxyReq: (proxyReq, req, res) => {
       const headers = new Map()
       const obj = {
-        host: 'localhost:9872',
-        connection: 'close',
-        pragma: 'no-cache',
         'cache-control': 'no-cache',
         'sec-ch-ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"',
         'sec-ch-ua-mobile': '?0',
@@ -51,6 +48,7 @@ const staticProxy = createProxyMiddleware({
         'sec-fetch-dest': 'document',
         'accept-encoding': 'gzip, deflate, br, zstd',
         'accept-language': 'en-GB,en-US;q=0.9,en;q=0.8,zh-CN;q=0.7,zh;q=0.6',
+        referer: 'https://www.kookapp.cn',
       }
       Object.entries(obj).forEach(([key, value]) => {
         headers.set(key, value)
