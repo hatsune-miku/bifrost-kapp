@@ -10,6 +10,7 @@ export function configureInterceptor(interceptor: ResponseInterceptor) {
   interceptor.onRaw('/', async (res) => {
     if (res.originalResponse.includes('static.kookapp.cn')) {
       res.originalResponse = res.originalResponse.replaceAll('static.kookapp.cn', 'bifrost-api.vanillacake.cn/static')
+      res.originalResponse = res.originalResponse.replaceAll('img.kookapp.cn', 'bifrost-api.vanillacake.cn/assets')
     }
   })
 
