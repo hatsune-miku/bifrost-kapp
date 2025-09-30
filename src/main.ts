@@ -30,7 +30,7 @@ const staticProxy = createProxyMiddleware({
   target: 'https://static.kookapp.cn',
   changeOrigin: true,
   pathRewrite: {
-    '^/static': 'static.kookapp.cn/',
+    // '^/static': 'static.kookapp.cn/',
   },
   on: {
     proxyReq: (proxyReq, req, res) => {
