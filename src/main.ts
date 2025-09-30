@@ -53,7 +53,7 @@ const staticProxy = createProxyMiddleware({
       req.headers['sec-fetch-site'] = 'same-site'
     },
     proxyRes: (proxyRes, req, res) => {
-      console.log('xx', 'proxyRes', res.statusCode, res.statusMessage)
+      console.log('xx', 'proxyRes', proxyRes.statusCode, proxyRes.headers)
     },
   },
 })
