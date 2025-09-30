@@ -1,43 +1,11 @@
-const express = require('express')
-const { createProxyMiddleware } = require('http-proxy-middleware')
-const bodyParser = require('body-parser')
+export interface ModifySetCookieMiddlewareOptions {
+  forceSecure?: boolean
+  sameSite?: string
+  domain?: string
+  transform?: (cookie: string) => string
+}
 
-const app = express()
-
-const proxy = createProxyMiddleware({
-  target: 'https://www.kookapp.cn',
-  logLevel: 'debug',
-  changeOrigin: true,
-  onProxyReq: (proxyReq, req) => {
-    console.log('xx', 'Proxy request', req.body)
-  },
-})
-
-app.use(
-  '/',
-  (req, res, next) => {
-    console.log('xx', 'Intercepted request', req.url)
-    req.url = req.url.replace('/kookapp', '')
-    req.headers.host = 'www.kookapp.cn'
-    req.headers.referer = 'https://www.kookapp.cn'
-    next()
-  },
-  modifySetCookieMiddleware({
-    transform: (cookie) => {
-      // Custom transformation logic
-      console.log('xx', 'Transforming cookie', cookie)
-      return cookie.replace(/Domain=kookapp\.cn/i, 'Domain=bifrost-api.vanillacake.cn')
-    },
-  }),
-  proxy
-)
-
-const PORT = 9872
-app.listen(PORT, () => {
-  console.log(`Server A (9872) running on port ${PORT}`)
-})
-
-function modifySetCookieMiddleware(options = {}) {
+export function modifySetCookieMiddleware(options: ModifySetCookieMiddlewareOptions = {}) {
   return function (req, res, next) {
     const originalSetHeader = res.setHeader
 

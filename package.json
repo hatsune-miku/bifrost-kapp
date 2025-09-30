@@ -1,13 +1,20 @@
 {
   "name": "bifrost-kookapp",
   "version": "1.0.0",
-  "main": "main.js",
+  "main": "src/main.ts",
   "license": "MIT",
   "scripts": {
-    "start": "node main.js"
+    "start": "rimraf dist && tsc && node dist/src/main.js",
+    "clean": "rimraf dist",
+    "build": "tsc"
   },
   "dependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "dotenv": "^17.2.3",
     "express": "^5.1.0",
-    "http-proxy-middleware": "^3.0.5"
+    "http-proxy-middleware": "^3.0.5",
+    "prettier": "^3.6.2",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.9.2"
   }
 }
