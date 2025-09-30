@@ -34,8 +34,13 @@ const staticProxy = createProxyMiddleware({
   },
   on: {
     proxyReq: (proxyReq, req, res) => {
-      req.headers['host'] = 'static.kookapp.cn'
+      req.headers['host'] = 'www.kookapp.cn'
       req.headers['referer'] = 'https://www.kookapp.cn'
+      req.headers['sec-ch-ua'] = '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"'
+      req.headers['sec-ch-ua-mobile'] = '?0'
+      req.headers['sec-ch-ua-platform'] = '"Windows"'
+      req.headers['user-agent'] =
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36'
     },
     proxyRes: (proxyRes, req, res) => {
       console.log('xx', 'proxyRes', req.headers)
