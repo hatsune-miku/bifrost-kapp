@@ -71,7 +71,7 @@ const staticProxy = createProxyMiddleware({
       console.log('xx', 'e', req.headers)
     },
     proxyRes: (proxyRes, req, res) => {
-      // console.log('xx', 'proxyRes', proxyRes.statusCode, proxyRes.headers)
+      console.log('xx', 'proxyRes', proxyRes.statusCode, proxyRes.headers)
     },
   },
 })
