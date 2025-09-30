@@ -26,9 +26,17 @@ const proxy = createProxyMiddleware({
   },
 })
 
+const staticProxy = createProxyMiddleware({
+  target: 'https://static.kookapp.cn',
+  changeOrigin: true,
+  selfHandleResponse: true,
+})
+
 app.use('/mis', (req, res) => {
   res.send('Hello World')
 })
+
+app.use('/static', staticProxy)
 
 app.use(
   '/',

@@ -7,6 +7,12 @@ export function configureInterceptor(interceptor: ResponseInterceptor) {
     }
   })
 
+  interceptor.onRaw('/', async (res) => {
+    if (res.originalResponse.includes('static.kookapp.cn')) {
+      res.originalResponse = res.originalResponse.replaceAll('static.kookapp.cn', 'bifrost-api.vanillacake.cn/static')
+    }
+  })
+
   interceptor.on('/api/v3/user/mail-list', async (res) => {
     res.originalData.data.items.push({
       id: 27801,
